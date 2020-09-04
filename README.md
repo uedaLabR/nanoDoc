@@ -28,5 +28,6 @@ pip install nanoDoc (to be)
 ## Prepareation
 
 Basecalling and signal alignment is required prior to run this program.
+
 Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propressing.
 
