@@ -7,7 +7,7 @@
 
 RNA modification detection using Nanopore raw reads with Deep One Class classification
 
-This software requires Invitro unmodified RNA raw read and 
+This software requires In vitro unmodified RNA raw read and 
 Native RNA raw read to process.
 
 GPU enviroment is strongly recommended to run this software.
@@ -27,7 +27,6 @@ pip install nanoDoc (to be)
 
 ## Prepareation
 
-Tombo (https://github.com/nanoporetech/tombo) preprocessing
-is required as prepareation
-
+Basecalling and signal alignment is required prior to run this program.
+Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propressing.
 
