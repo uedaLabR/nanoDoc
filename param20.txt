@@ -1,0 +1,5 @@
+#y=b*(x**a) to approximate std value for the score
+a=-1.7507891
+b=2263.44167
+uplimit=20000
+takeparcentile=0.20
