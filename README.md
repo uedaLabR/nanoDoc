@@ -21,7 +21,8 @@ Python (>= 3.6), packages,tensorflow
 ## Install
 
 ```
-pip install nanoDoc (to be)
+will be available through pip
+meanwhile, download the source file and run.
 ```
 
 
