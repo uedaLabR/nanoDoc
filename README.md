@@ -45,9 +45,10 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
   fast_genome_reference - reference fasta file
   thread - number of threads (defult 4), this process is slow. a large number of thread (e.g. 10) is recommended if resources allowed.
   
-  e.g. 
+  e.g.
+  ```
   python ./nanoDoc.py formatfile -i /mydir/testIVT/singleFast5 -o /mydir/testIVTout -r /reference/NC000913.fa -t 10
-  
+  ```
   
   analysis :  analyse modification sites, given IVT and Native raw reads sequence
   
@@ -64,7 +65,9 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
   end - end position (defult end of the reference)
   strand - strand "+" or "- (defult "+")
   e.g.
+  ```
   python ./nanoDoc.py analysis -w /weight5mer_m6A/ -p /param20.txt -r /reference/NC000913.fa -rraw /equalbinnedpq/ecrRnaIvt -traw /equalbinnedpq/ecrRnaNative -o /result/result.txt -s 4035631 -e 4037072
+```  
   
   
   
