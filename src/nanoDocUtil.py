@@ -55,7 +55,7 @@ class PqReader:
             
         f.close()
         self.df = pd.DataFrame(tb,columns=('idx','chr','start','end'))
-        print(self.df)
+        #print(self.df)
         self.currentPqs = set()
     
     def loadpq(self,set0,chr,pos,strand):
@@ -71,11 +71,14 @@ class PqReader:
         for s in ss:
            
             s = self.indexfile+"/algined"+str(s)+".pq"
-            #print(s)
+            print(s)
             
             table = pq.read_table(s, columns=['nucb4After','mapped_chrom','mapped_strand','position','mapped_start','mapped_end','signal','originalsize'])
             df = table.to_pandas()  
-            df = df.query('(mapped_start + 40) <= '+str(pos)+  ' & (mapped_end - 40) >= '+str(pos)+  ' & mapped_chrom=="'+chr+'" & mapped_strand =="'+strand +'" & (mapped_end - mapped_start) > ' +str(self.minreadlen) )
+            if strand == "+":
+                df = df.query('(mapped_end - 40) >= '+str(pos)+  ' & mapped_chrom=="'+chr+'" & mapped_strand =="'+strand +'" & (mapped_end - mapped_start) > ' +str(self.minreadlen) )
+            else:
+                df = df.query('(mapped_start +40) <= '+str(pos)+  ' & mapped_chrom=="'+chr+'" & mapped_strand =="'+strand +'" & (mapped_end - mapped_start) > ' +str(self.minreadlen) )
             gc.collect()
             if cnt == 0:
                 totaldf = df
@@ -89,7 +92,10 @@ class PqReader:
     
     def freeUnsued(self,chr,pos,strand):
         
-        self.pq = self.pq.query('(mapped_start + 40) <= '+str(pos)+  ' & (mapped_end - 40) >= '+str(pos)+  ' & mapped_chrom=="'+chr+'" & mapped_strand =="'+strand +'" & (mapped_end - mapped_start) > ' +str(self.minreadlen) )
+            if strand == "+":
+                df = df.query('(mapped_end - 40) >= '+str(pos)+  ' & mapped_chrom=="'+chr+'" & mapped_strand =="'+strand +'" & (mapped_end - mapped_start) > ' +str(self.minreadlen) )
+            else:
+                df = df.query('(mapped_start +40) <= '+str(pos)+  ' & mapped_chrom=="'+chr+'" & mapped_strand =="'+strand +'" & (mapped_end - mapped_start) > ' +str(self.minreadlen) )
    
     def checkUpdate(self,chr,pos,strand):
         
@@ -97,12 +103,12 @@ class PqReader:
 #         print(df)
         df = df['idx'].drop_duplicates()
         s = set(df)
-        if(s!= self.currentPqs or len(self.currentPqs)==0):
+        if(s!= self.currentPqs or self.pq.empty):
             self.pq =self.loadpq(s,chr,pos,strand)        
             self.currentPqs =s
         
-        if pos%10 ==0:    
-            self.freeUnsued(chr,pos,strand)
+        #if pos%10 ==0:    
+        #    self.freeUnsued(chr,pos,strand)
         
 #             print(pos,s)
             
@@ -111,11 +117,11 @@ class PqReader:
         unitwidth = DATA_LENGTH_UNIT
         self.checkUpdate(chr,pos,strand)
         pqlen = len(self.pq)    
-        df = self.pq
-            
+        _pq = self.pq
+        #print("pqlen=",len(_pq))    
         data = []    
         takecnt = 0
-        for index, row in df.iterrows():
+        for index, row in _pq.iterrows():
 
             mapped_chrom = row['mapped_chrom']
             mapped_start = row['mapped_start']
