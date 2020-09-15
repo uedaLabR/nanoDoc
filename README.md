@@ -12,6 +12,11 @@ Native RNA raw read to process.
 
 GPU enviroment is strongly recommended to run this software.
 
+You can find more infromation about nanoDoc in this preprint:
+nanoDoc: RNA modification detection using Nanopore raw reads with Deep One-Class Classification
+https://www.biorxiv.org/content/10.1101/2020.09.13.295089v1
+
+
 ## Dependency
 
 ### Python
