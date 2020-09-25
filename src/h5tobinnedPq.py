@@ -124,7 +124,6 @@ def makeParquet(path, pathout, refg, thread):
         idx = idx + 1
 
     size = len(blist)
-    print(size)
 #    print(size)
     
 #    for cont in blist:
