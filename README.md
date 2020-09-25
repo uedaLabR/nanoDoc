@@ -22,7 +22,7 @@ https://www.biorxiv.org/content/10.1101/2020.09.13.295089v1
 ## Dependency
 
 ### Python
-Python (>= 3.6), packages,tensorflow
+Python (>= 3.6), packages,tensorflow, checked with tensorflow 2.3, cuda/10.1, cudnn/7.6
 
 
 ## Install
