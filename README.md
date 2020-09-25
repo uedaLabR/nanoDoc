@@ -80,7 +80,7 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
   ```
   python ./nanoDoc.py analysis -w /weight5mer/ -p /param20.txt -r /reference/NC000913.fa -rraw /equalbinnedpq/ecrRnaIvt -traw /equalbinnedpq/ecrRnaNative -o /result/result.txt -s 4035631 -e 4037072
 ```  
-please download preculculate weight from repository weight5mer_1/weight5mer_2 and merge inner directory to /weight5mer
+please download the preculculate weight from repository weight5mer_1/weight5mer_2 and merge inner directory to /weight5mer
   
   
   
