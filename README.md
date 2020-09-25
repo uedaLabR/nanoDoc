@@ -22,7 +22,7 @@ https://www.biorxiv.org/content/10.1101/2020.09.13.295089v1
 ## Dependency
 
 ### Python
-Python (>= 3.6), packages,tensorflow
+Python (>= 3.6), packages,tensorflow, checked with tensorflow 2.3, cuda/10.1, cudnn/7.6
 
 
 ## Install
@@ -78,11 +78,22 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
   strand - strand "+" or "- (defult "+")
   e.g.
   ```
-  python ./nanoDoc.py analysis -w /weight5mer_m6A/ -p /param20.txt -r /reference/NC000913.fa -rraw /equalbinnedpq/ecrRnaIvt -traw /equalbinnedpq/ecrRnaNative -o /result/result.txt -s 4035631 -e 4037072
+  python ./nanoDoc.py analysis -w /weight5mer/ -p /param20.txt -r /reference/NC000913.fa -rraw /equalbinnedpq/ecrRnaIvt -traw /equalbinnedpq/ecrRnaNative -o /result/result.txt -s 4035631 -e 4037072
 ```  
+please download the preculculate weight from repository weight5mer_1/weight5mer_2 and merge inner directory to /weight5mer
   
   
-  
+## Commands for preparetion (calculate weight)
+
+#### make 5mer parquet for training
+python ./nanoDocPrep.py make5mer -r /path/to/reference.fa -rraw /path/to/ivt/parquetfile/testIVTout -ssize 12000 -o /path/to/out/fivemerparquet
+
+#### training first cnn
+python ./nanoDocPrep.py traincnn -in /path/to/out/fivemerparquet -o /path/to/out/weight
+
+#### DOC training
+python ./nanoDocPrep.py traindoc -in /path/to/out/fivemerparquet -wight /path/to/out/weight/xxx.hdf -o /path/to/out/fivemer/weight
+
 
 
 
