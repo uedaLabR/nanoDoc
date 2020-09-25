@@ -28,8 +28,13 @@ Python (>= 3.6), packages,tensorflow
 ## Install
 
 ```
-will be available through pip
-meanwhile, download the source file and run.
+$ git clone https://github.com/uedaLabR/nanoDoc.git  # or fork first and clone that
+$ cd src
+$ python3 -m venv venv3
+$ source venv3/bin/activate
+(venv3) $ pip install --upgrade pip
+(venv3) $ pip install -r requirements.txt
+
 ```
 
 
