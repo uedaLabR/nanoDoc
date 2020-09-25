@@ -78,8 +78,9 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
   strand - strand "+" or "- (defult "+")
   e.g.
   ```
-  python ./nanoDoc.py analysis -w /weight5mer_m6A/ -p /param20.txt -r /reference/NC000913.fa -rraw /equalbinnedpq/ecrRnaIvt -traw /equalbinnedpq/ecrRnaNative -o /result/result.txt -s 4035631 -e 4037072
+  python ./nanoDoc.py analysis -w /weight5mer/ -p /param20.txt -r /reference/NC000913.fa -rraw /equalbinnedpq/ecrRnaIvt -traw /equalbinnedpq/ecrRnaNative -o /result/result.txt -s 4035631 -e 4037072
 ```  
+please download preculculate weight from 
   
   
   
