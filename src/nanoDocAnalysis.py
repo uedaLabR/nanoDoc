@@ -38,25 +38,28 @@ def getSD(cnt, coeffA, coeffB):
 
 
 def callMinusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom, chromtgt, start,
-                    end):
+                    end,refpq, targetpq, minreadlen):
     n = end
     idx = 0
     strand = "-"
     while n > start:
         subs = seq[idx:idx + 5]
-        eachProcess(n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
+        cnt,cntref = eachProcess(n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
                     chromtgt, start, end)
+
+
         n = n - 1
         idx = idx + 1
 
 
 def callPlusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom, chromtgt, start,
-                   end):
+                   end,refpq, targetpq,minreadlen):
     strand = "+"
     for n in range(start, end):
         subs = seq[(n - start):(n - start) + 5]
-        eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
+        cnt,cntref = eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
                     chromtgt, start, end)
+
 
 
 def eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
@@ -77,7 +80,7 @@ def eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, 
         print(infos)
         fw.writelines(infos + "\n")
         fw.flush()
-        return
+        return (cnt,cntref)
 
     rawdatas, cnt = nanoDocUtil.reducesize(rawdatas, cntref // 2)  # raw data have at least half size as reference data
 
@@ -135,6 +138,7 @@ def eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, 
     print(infos)
     fw.writelines(infos + "\n")
     fw.flush()
+    return (cnt,cntref)
 
 
 def modCall(wfile, paramf, ref, refpq, targetpq, out, chrom, chromtgt, start, end, strand, minreadlen):
@@ -160,10 +164,10 @@ def modCall(wfile, paramf, ref, refpq, targetpq, out, chrom, chromtgt, start, en
 
     if strand == "-":
         callMinusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom, chromtgt,
-                        start, end)
+                        start, end,refpq, targetpq,minreadlen)
     else:
         callPlusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom, chromtgt,
-                       start, end)
+                       start, end,refpq, targetpq,minreadlen)
 
     fw.close()
 

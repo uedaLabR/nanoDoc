@@ -38,13 +38,23 @@ def loadDepthDB(name,indexf):
     xlist=[]
     f = open(indexf)
     line = True
+    idxno =0
+    chrb4 = ""
+    rowcnt = 0
     while line:
         line = f.readline()
         data = line.split(",")
         if(len(data)<3):
             break
+
+        if chrb4 != data[1]:
+            idxno = idxno+1
+            rowcnt = 0
+
         if data[1] == name:
-            xlist.append((data[2],data[3],data[4]))
+            xlist.append((data[2],data[3],idxno))
+
+        chrb4 =  data[1]
 
     f.close
     return np.array(xlist,dtype='int16')

@@ -5,6 +5,7 @@ import os
 import initialtrainingCNN
 import make5merwight
 import itertools
+import os
 
 @click.group()
 def cmd():
@@ -12,43 +13,46 @@ def cmd():
 
 
 @cmd.command()
-@click.option('-rraw', '--refRaw')
-@click.option('-ref', '--refFastaFile')
-@click.option('-ssize', '--samplesize')
-@click.option('-out', '--out')
-def make5mer(refRaw,refFastaFile,samplesize,out):
+@click.option('-rraw', '--refraw')
+@click.option('-r', '--ref')
+@click.option('-ssize', '--samplesize',default=12000)
+@click.option('-o', '--out')
+def make5mer(refraw,ref,samplesize,out):
 
     click.echo('make5mer')
     #samplingplan
-    indexf = refRaw+"/index.txt"
+    indexf = refraw+"/index.txt"
     path_w = out + "/sampleplingplan.txt"
-    os.mkdir(path_w)
-    SamplingPlan.makeSamplePlan(refFastaFile,indexf,samplesize,path_w)
+    if not os.path.exists(path_w):
+        SamplingPlan.makeSamplePlan(ref,indexf,samplesize,path_w)
     #make 5mer
-    to5merpq.mkpq(path_w,refFastaFile,refRaw,out)
+    to5merpq.mkpq(path_w,ref,refraw,out)
 
 @cmd.command()
 @click.option('-in', '--in5mmer')
-@click.option('-out', '--outwight')
-@click.option('-epochs', '--epochs',defult=500)
-def trainCNN(in5mmer,outwight,epochs):
+@click.option('-o', '--outwight')
+@click.option('-ssize', '--samplesize',default=1200)
+@click.option('-epochs', '--epochs',default=500)
+def traincnn(in5mmer,outwight,samplesize,epochs):
 
     click.echo('trainCNN')
-    initialtrainingCNN.main(in5mmer,outwight,epochs)
+    initialtrainingCNN.main(in5mmer,outwight,samplesize,epochs)
 
 @cmd.command()
 @click.option('-in', '--in5mmer')
-@click.option('-out', '--outwight')
+@click.option('-o', '--outwight')
 @click.option('-wight', '--bestwight')
-@click.option('-epochs', '--epochs',defult=3)
-def trainDoc(in5mmer,outwight,bestwight,epochs):
+@click.option('-ssize', '--samplesize',default=12000)
+@click.option('-epochs', '--epochs',default=3)
+def traindoc(in5mmer,outwight,bestwight,samplesize,epochs):
 
     click.echo('trainDoc')
     nucs = ('A','T','C','G')
     for n1,n2,n3,n4,n5 in itertools.product(nucs, nucs, nucs,nucs, nucs):
 
         nuc = n1+n2+n3+n4+n5
-        make5merwight.train(in5mmer,outwight,nuc,bestwight,epochs)
+        print('training doc',nuc)
+        make5merwight.train(in5mmer,outwight,nuc,bestwight,samplesize,epochs)
 
 def main():
     cmd()

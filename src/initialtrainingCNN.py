@@ -5,12 +5,39 @@ import numpy as np
 import tensorflow
 import cnn_network
 import nanoDocUtil
+import os
+import pandas as pd
 
 DATA_LENGTH_UNIT = 60
 DATA_LENGTH = DATA_LENGTH_UNIT * 5 + 20
 
+def loadpq(path,samplesize):
+    
+    data = []
+    files = []
+    for x in os.listdir(path):  
+        if x.endswith(".pq"):
+            files.append(path+"/"+x)
+    idx = 1
+    for f in files:
+        print(f)
+        df = pq.read_table(f).to_pandas()
+        cnt = 0
+        for index, row in df.iterrows():
+            tp = (idx,row[0],row[1])
+	    
+            if cnt >= samplesize:
+                continue
 
-def prepData(s_data):
+            data.append(tp)
+            cnt = cnt +1
+
+        idx = idx +1
+    dftotal = pd.DataFrame(data,columns=['labelidx','signal','originalsize'])
+    return dftotal
+
+def prepData(df1):
+
     train_x = []
     test_x = []
     train_y = []
@@ -18,8 +45,8 @@ def prepData(s_data):
     p_flg = 0
     flg = 0
     totalcnt = 0
-    df = pq.read_table(s_data).to_pandas()
-    df1 = df[['labelidx', 'signal', 'originalsize']]
+    #df = pq.read_table(s_data).to_pandas()
+    #df1 = df[['labelidx', 'signal', 'originalsize']]
 
     for idx, row in df1.iterrows():
 
@@ -85,7 +112,7 @@ def prepData(s_data):
     return train_x, test_x, train_y, test_y, num_classes
 
 
-def main(s_data, s_out,epochs):
+def main(s_data, s_out,samplesize,epochs):
 
     batch_size = 1024
     num_classes = 1024
@@ -96,8 +123,9 @@ def main(s_data, s_out,epochs):
     model = cnn_network.build_network(shape=shape1, num_classes=num_classes)
     model.summary()
     # model = multi_gpu_model(model, gpus=gpu_count)  # add
-
-    train_x, test_x, train_y, test_y, num_classes = prepData(s_data)
+    df = loadpq(s_data,samplesize)
+    train_x, test_x, train_y, test_y, num_classes = prepData(df)
+    print(len(train_x),len(test_x),len(train_y),len(test_y),num_classes)
     model.compile(loss='categorical_crossentropy',
                   optimizer=tensorflow.keras.optimizers.Adam(lr=0.0005, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0,
                                                   amsgrad=False),
@@ -105,6 +133,7 @@ def main(s_data, s_out,epochs):
                   metrics=['accuracy'])
 
     for ep in range(epochs):
+        print("epoc",ep)
         model.fit(train_x, train_y, epochs=1, batch_size=batch_size, verbose=1,
                   shuffle=True, validation_data=(test_x, test_y))
         outpath = s_out + str(ep) + ".hdf"

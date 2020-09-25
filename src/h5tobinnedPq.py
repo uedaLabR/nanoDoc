@@ -125,6 +125,7 @@ def makeParquet(path, pathout, refg, thread):
 
     size = len(blist)
     print(size)
+#    print(size)
     
 #    for cont in blist:
 #        _makeParquet(cont)
@@ -147,7 +148,8 @@ def _makeParquet(tp):
         if onerecord != None:
            wholedata.append(onerecord)
            cnt_1 = cnt_1+1
-           print(cnt_1)
+           if cnt_1%100==0:
+              print(cnt_1)
         # (mapped_chrom, mapped_strand, mapped_start, mapped_end, clipped_bases_start, clipped_bases_end, fastq, bytedata,binsizelist)
     df = pd.DataFrame(wholedata,
                    columns=['mapped_chrom', 'mapped_strand', 'mapped_start', 'mapped_end', 'clipped_bases_start',

@@ -45,7 +45,7 @@ def formatFile(input,output,ref,thread):
 @click.option('-s', '--start',default=1)
 @click.option('-e', '--end',default=-1)
 @click.option('-st', '--strand',default="+")
-@click.option('-minreadlen', '--minreadlen',default=200)
+@click.option('-minreadlen', '--minreadlen',default=50)
 def analysis(wight,param,ref,refraw,tgraw,output,chrom,start,end,strand,minreadlen):
 
     click.echo('modification call')

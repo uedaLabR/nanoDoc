@@ -20,17 +20,17 @@ DATA_LENGTH = DATA_LENGTH_UNIT * 5 + 20
 def loadData(s, count):
     table = pq.read_table(s)
     df = table.to_pandas()
-    df1 = df[['nucb4After', 'signal', 'originalsize']]
+    df1 = df[['signal', 'originalsize']]
 
     data_x = []
     cnt = 0
     for index, row in df1.iterrows():
 
-        signal = np.array(list(row[1]))
+        signal = np.array(list(row[0]))
         signal = nanoDocUtil.zeropadding10(signal)
         data_x.append(signal)
 
-        originalsize = np.array(nanoDocUtil.extendAry(row[2]))
+        originalsize = np.array(nanoDocUtil.extendAry(row[1]))
         originalsize = nanoDocUtil.zeropadding10(originalsize)
         data_x.append(originalsize)
 
@@ -59,7 +59,7 @@ def getNearExculudeSelf(nuc):
     return gen
 
 
-def prepDataNear(s_data, nuc):
+def prepDataNear(s_data,samplesize, nuc):
     train_x = []
     test_x = []
     train_y = []
@@ -116,7 +116,7 @@ def prepDataNear(s_data, nuc):
 
             if cnt % 12000 == 0:
                 print(samplecnt, totalcnt, path, totalcnt, idx, row)
-            if cnt == 12000:
+            if cnt == samplesize:
                 break
 
         samplecnt = samplecnt + 1
@@ -157,7 +157,7 @@ def prepDataNear(s_data, nuc):
     return train_x, test_x, train_y, test_y, num_classes
 
 
-def prepData(s_data, nuc):
+def prepData(s_data,samplesize, nuc):
     train_x = []
     test_x = []
     train_y = []
@@ -205,7 +205,7 @@ def prepData(s_data, nuc):
 
         if cnt % 12000 == 0:
             print(totalcnt, path, totalcnt, idx, row)
-        if cnt == 12000:
+        if cnt == samplesize:
             break
 
     #     print("totalcnt",totalcnt)
@@ -245,7 +245,8 @@ lambda_ = 0.1  # for compact loss
 
 
 
-def train(s_data, s_out, nuc,bestwight, epoch_num):
+def train(s_data, s_out, nuc,bestwight ,samplesize , epoch_num):
+
     batch_size = 1024
     num_classes_org = 1024
     num_classes = 63
@@ -276,8 +277,8 @@ def train(s_data, s_out, nuc,bestwight, epoch_num):
     model_r.compile(optimizer=optimizer, loss="categorical_crossentropy")
     model_t.compile(optimizer=optimizer, loss=original_loss)
 
-    x_ref, test_x_r, y_ref, test_y_r, num_classes_r = prepDataNear(s_data, nuc)
-    x_target, test_x, train_y, test_y, num_classes = prepData(s_data, nuc)
+    x_ref, test_x_r, y_ref, test_y_r, num_classes_r = prepDataNear(s_data,samplesize, nuc)
+    x_target, test_x, train_y, test_y, num_classes = prepData(s_data,samplesize, nuc)
 
     ref_samples = np.arange(x_ref.shape[0])
 
