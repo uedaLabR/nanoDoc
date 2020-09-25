@@ -47,7 +47,7 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
 
 ## Commands
 
-  # formatFile:  create uniform bin sized parque file from tombo resiggled signle fast5 files.
+  #### formatFile:  create uniform bin sized parque file from tombo resiggled signle fast5 files.
   
   python ./nanoDoc.py formatFile -i fast5dir -o outputdir -r fast_genome_reference -t thread
   
@@ -62,7 +62,7 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
   python ./nanoDoc.py formatfile -i /mydir/testIVT/singleFast5 -o /mydir/testIVTout -r /reference/NC000913.fa -t 10
   ```
   
-  # analysis :  analyse modification sites, given IVT and Native raw reads sequence
+  ##### analysis :  analyse modification sites, given IVT and Native raw reads sequence
   
   python ./nanoDoc.py analysis -w 5-mer wight -p parameter_file -rraw dir_to_IVT_raw_parquet_file -traw dir_to_Native_raw_parquet_file -o result_output
                                -chrom chromosome(defult first chromosome in the reference) -s start -e end -strand strand(defult "+")  
