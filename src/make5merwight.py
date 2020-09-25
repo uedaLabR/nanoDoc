@@ -1,17 +1,24 @@
 import pyarrow.parquet as pq
 
 import numpy as np
-import cnn_network
+import cnn_network_keras
 import tensorflow
-from tensorflow.keras.layers import GlobalAveragePooling1D, Dense
-from tensorflow.keras import Model
-#from tensorflow.keras import Network
-from tf_agents.networks.network import Network
-from tensorflow.keras.optimizers import SGD
-from tensorflow.keras import backend as K
+#from tensorflow.keras.layers import GlobalAveragePooling1D, Dense
+#from tensorflow.keras import Model
+#from tensorflow.keras.engine import Network
+#from tensorflow.python.keras.engine import network as Network
+#from keras.engine.network import Network
+#from tensorflow.keras.optimizers import SGD
+#from tensorflow.keras import backend as K
 import itertools
 import nanoDocUtil
-
+from keras.layers import GlobalAveragePooling1D,Dense
+from keras.models import Model
+from keras.engine.network import Network
+from keras.optimizers import SGD
+from keras import backend as K
+import itertools
+import keras
 
 DATA_LENGTH_UNIT = 60
 DATA_LENGTH = DATA_LENGTH_UNIT * 5 + 20
@@ -158,6 +165,7 @@ def prepDataNear(s_data,samplesize, nuc):
 
 
 def prepData(s_data,samplesize, nuc):
+
     train_x = []
     test_x = []
     train_y = []
@@ -252,7 +260,7 @@ def train(s_data, s_out, nuc,bestwight ,samplesize , epoch_num):
     num_classes = 63
     shape1 = (None, DATA_LENGTH, 2)
 
-    model = cnn_network.build_network(shape=shape1, num_classes=num_classes_org)
+    model = cnn_network_keras.build_network(shape=shape1, num_classes=num_classes_org)
     model.load_weights(bestwight)
     model.layers.pop()  # remove last layer
     model.layers.pop()  # remove last layer
