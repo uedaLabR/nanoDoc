@@ -85,10 +85,13 @@ please download the preculculate weight from repository weight5mer_1/weight5mer_
   
 ## Commands for preparetion (calculate weight)
 
+#### make 5mer parquet for training
 python ./nanoDocPrep.py make5mer -r /path/to/reference.fa -rraw /path/to/ivt/parquetfile/testIVTout -ssize 12000 -o /path/to/out/fivemerparquet
 
+#### training first cnn
 python ./nanoDocPrep.py traincnn -in /path/to/out/fivemerparquet -o /path/to/out/weight
 
+#### DOC training
 python ./nanoDocPrep.py traindoc -in /path/to/out/fivemerparquet -wight /path/to/out/weight/xxx.hdf -o /path/to/out/fivemer/weight
 
 
