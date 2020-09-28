@@ -120,12 +120,13 @@ def mkpq(planf,ref,p,outdir):
     #merge files
     files = []    
     for x in os.listdir(outdir):  
-        if os.path.isdir(path + "/" + x):
+        if os.path.isdir(outdir + "/" + x):
             files.append(x)
     
     totaldf =None
     for dir in files: 
         for each in os.listdir(outdir+ "/" +dir):  
+            s = outdir+ "/" +dir+ "/"+each
             table = pq.read_table(s, columns=['signal','originalsize'])
             df = table.to_pandas()  
             if cnt == 0:
@@ -133,6 +134,7 @@ def mkpq(planf,ref,p,outdir):
             else:
                 totaldf = pd.concat([totaldf, df], axis=0)  
         outpath = outdir+ "/" +dir +".pq"
+        print(outpath)
         totaldf.to_parquet(outpath)
         shutil.rmtree(outdir+ "/" +dir)
 
