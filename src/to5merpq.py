@@ -125,14 +125,19 @@ def mkpq(planf,ref,p,outdir):
     
     totaldf =None
     for dir in files: 
+        cnt = 0
         for each in os.listdir(outdir+ "/" +dir):  
             s = outdir+ "/" +dir+ "/"+each
-            table = pq.read_table(s, columns=['signal','originalsize'])
-            df = table.to_pandas()  
-            if cnt == 0:
-                totaldf = df
-            else:
-                totaldf = pd.concat([totaldf, df], axis=0)  
+            try:
+                table = pq.read_table(s, columns=['signal','originalsize'])
+                df = table.to_pandas()  
+                if cnt == 0:
+                    totaldf = df
+                else:
+                    totaldf = pd.concat([totaldf, df], axis=0) 
+                cnt = cnt +1
+            except:
+                pass
         outpath = outdir+ "/" +dir +".pq"
         print(outpath)
         totaldf.to_parquet(outpath)
