@@ -180,7 +180,11 @@ def getFastQ(f, key):
         datalist = list(group.values())
         fastq = datalist[0]
         fastq = fastq[()]
-        return fastq.decode('utf-8')
+        try:
+            fastq = fastq.decode('utf-8')
+        except AttributeError:
+            pass
+        return fastq
     return None
 
 def getRecord(fdata):
