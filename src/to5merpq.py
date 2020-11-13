@@ -15,6 +15,8 @@ def loadParquet(p,chr, idxs):
         idx = idx.replace('{', '')
         idx = idx.replace(' ', '')
         pp = p +"/algined" +idx + ".pq"
+        if not os.path.exists(path):
+            pp = p +"/" +idx + ".pq"
         table = pq.read_table(pp)
         df = table.to_pandas()
         if cnt == 0:
@@ -82,6 +84,9 @@ def mkpq(planf,ref,p,outdir):
     refpr = nanoDocUtil.PqReader(p, minreadlen)
     uplimit = 100000
 
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
+        
     while line:
 
         line = f.readline().rstrip('\n')

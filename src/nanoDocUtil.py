@@ -20,6 +20,7 @@ from numpy import mean, absolute
 import math
 import gc
 from scipy.optimize import curve_fit
+import os
 
 DATA_LENGTH_UNIT = 60
 DATA_LENGTH = DATA_LENGTH_UNIT*5+20
@@ -71,6 +72,8 @@ class PqReader:
         for s in ss:
            
             s = self.indexfile+"/algined"+str(s)+".pq"
+            if not os.path.exists(path):
+                s = self.indexfile + "/" + str(s) + ".pq"
             print(s)
             
             table = pq.read_table(s, columns=['nucb4After','mapped_chrom','mapped_strand','position','mapped_start','mapped_end','signal','originalsize'])
