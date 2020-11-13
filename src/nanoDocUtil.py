@@ -72,7 +72,7 @@ class PqReader:
         for s in ss:
            
             s = self.indexfile+"/algined"+str(s)+".pq"
-            if not os.path.exists(path):
+            if not os.path.exists(s):
                 s = self.indexfile + "/" + str(s) + ".pq"
             print(s)
             

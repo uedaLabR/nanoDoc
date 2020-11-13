@@ -15,7 +15,7 @@ def loadParquet(p,chr, idxs):
         idx = idx.replace('{', '')
         idx = idx.replace(' ', '')
         pp = p +"/algined" +idx + ".pq"
-        if not os.path.exists(path):
+        if not os.path.exists(pp):
             pp = p +"/" +idx + ".pq"
         table = pq.read_table(pp)
         df = table.to_pandas()
