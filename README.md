@@ -29,7 +29,7 @@ Python (>= 3.6), packages,tensorflow, checked with tensorflow 2.3, cuda/10.1, cu
 
 ```
 $ git clone https://github.com/uedaLabR/nanoDoc.git  
-$ cd src
+$ cd nanoDoc/src
 $ python3 -m venv venv3
 $ source venv3/bin/activate
 (venv3) $ pip install --upgrade pip
