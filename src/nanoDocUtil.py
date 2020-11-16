@@ -71,12 +71,12 @@ class PqReader:
  
         for s in ss:
            
-            s = self.indexfile+"/algined"+str(s)+".pq"
-            if not os.path.exists(s):
-                s = self.indexfile + "/" + str(s) + ".pq"
-            print(s)
+            s1 = self.indexfile+"/algined"+str(s)+".pq"
+            if not os.path.exists(s1):
+                s1 = self.indexfile + "/" + str(s) + ".pq"
+            print(s1)
             
-            table = pq.read_table(s, columns=['nucb4After','mapped_chrom','mapped_strand','position','mapped_start','mapped_end','signal','originalsize'])
+            table = pq.read_table(s1, columns=['nucb4After','mapped_chrom','mapped_strand','position','mapped_start','mapped_end','signal','originalsize'])
             df = table.to_pandas()  
             if strand == "+":
                 df = df.query('(mapped_end - 40) >= '+str(pos)+  ' & mapped_chrom=="'+chr+'" & mapped_strand =="'+strand +'" & (mapped_end - mapped_start) > ' +str(self.minreadlen) )
