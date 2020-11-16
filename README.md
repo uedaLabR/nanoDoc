@@ -29,11 +29,16 @@ Python (>= 3.6), packages,tensorflow, checked with tensorflow 2.3, cuda/10.1, cu
 
 ```
 $ git clone https://github.com/uedaLabR/nanoDoc.git  
-$ cd src
+$ cd nanoDoc/src
 $ python3 -m venv venv3
 $ source venv3/bin/activate
 (venv3) $ pip install --upgrade pip
 (venv3) $ pip install -r requirements.txt
+(venv3) $ cd..
+(venv3) $ mkdir weight5mer
+(venv3) $ mv./weight5mer_1/* ./weight5mer
+(venv3) $ mv./weight5mer_2/* ./weight5mer
+(venv3) $ rm -r /weight5mer_*
 
 ```
 
