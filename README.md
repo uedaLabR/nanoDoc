@@ -88,7 +88,7 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
 please download the preculculate weight from repository weight5mer_1/weight5mer_2 and merge inner directory to /weight5mer
 
 #### result_output format: 
-  output file consist of 11 column
+  output file consist of 11 columns
   
   pos - genomic position    
   5mer - 5mer composition at the site  
