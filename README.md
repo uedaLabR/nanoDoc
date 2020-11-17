@@ -86,7 +86,22 @@ Tombo (https://github.com/nanoporetech/tombo) resiggle command is used for propr
   python ./nanoDoc.py analysis -w /weight5mer/ -p /param20.txt -r /reference/NC000913.fa -rraw /equalbinnedpq/ecrRnaIvt -traw /equalbinnedpq/ecrRnaNative -o /result/result.txt -s 4035631 -e 4037072
 ```  
 please download the preculculate weight from repository weight5mer_1/weight5mer_2 and merge inner directory to /weight5mer
+
+#### result_output format: 
+  output file consist of 11 column
   
+  pos 
+  5mer 
+  depth_tgt
+  depth_ref
+  med_current
+  mad_current
+  med_currentR
+  mad_currentR
+  current_ratio
+  scoreSide1
+  scoreSide2
+  scoreTotal 
   
 ## Commands for preparetion (calculate weight)
 
