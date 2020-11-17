@@ -100,7 +100,7 @@ please download the preculculate weight from repository weight5mer_1/weight5mer_
   mad_currentR - median absolute deviation (MAD) of current value (reference)   
   current_ratio - tatget to reference ratio of median current value   
   scoreSide1 - referenct to target accumulation score
-  scoreSide2 - target to referenct accumulation score
+  scoreSide2 - target to referenct accumulation score  
   scoreTotal - total score
   
 ## Commands for preparetion (calculate weight)
