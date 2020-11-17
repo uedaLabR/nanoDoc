@@ -162,6 +162,9 @@ def modCall(wfile, paramf, ref, refpq, targetpq, out, chrom, chromtgt, start, en
 
     fw = open(out, mode='w')
 
+    header = "#pos \t 5mer \t depth_tgt \t depth_ref \t med_current \t mad_current \t med_currentR \t mad_currentR \t current_ratio \t scoreSide1 \t scoreSide2 \t scoreTotal"
+    fw.writelines(header + "\n")
+
     if strand == "-":
         callMinusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom, chromtgt,
                         start, end,refpq, targetpq,minreadlen)
