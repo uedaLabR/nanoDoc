@@ -90,18 +90,18 @@ please download the preculculate weight from repository weight5mer_1/weight5mer_
 #### result_output format: 
   output file consist of 11 column
   
-  pos 
-  5mer 
-  depth_tgt
-  depth_ref
-  med_current
-  mad_current
-  med_currentR
-  mad_currentR
-  current_ratio
-  scoreSide1
-  scoreSide2
-  scoreTotal 
+  pos - genomic position    
+  5mer - 5mer composition at the site  
+  depth_tgt - target reads depth  
+  depth_ref - reference reads depth  
+  med_current - median current value (target)  
+  mad_current - median absolute deviation (MAD) of current value (target)   
+  med_currentR - median current value (reference)   
+  mad_currentR - median absolute deviation (MAD) of current value (reference)   
+  current_ratio - tatget to reference ratio of median current value   
+  scoreSide1 - referenct to target accumulation score
+  scoreSide2 - target to referenct accumulation score
+  scoreTotal - total score
   
 ## Commands for preparetion (calculate weight)
 
