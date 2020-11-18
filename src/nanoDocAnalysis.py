@@ -64,7 +64,7 @@ def callPlusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, ta
 
 def eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
                 chromtgt, start, end):
-    weight_path = wfile + str(subs) + "/model_t_ep_1.h5"
+    weight_path = wfile + str(subs).upper() + "/model_t_ep_1.h5"
     model_t.load_weights(weight_path)
 
     # target signal
