@@ -114,6 +114,12 @@ class PqReader:
         #    self.freeUnsued(chr,pos,strand)
         
 #             print(pos,s)
+
+    def minStart(self,chr):
+        return df['start'].min()
+
+    def maxEnd(self,chr):
+        return df['end'].max()
             
     def getData(self,chr,strand,pos,maxtake):
         

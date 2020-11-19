@@ -149,15 +149,21 @@ def modCall(wfile, paramf, ref, refpq, targetpq, out, chrom, chromtgt, start, en
         chrom = nanoDocUtil.getFirstChrom(ref)
         chromtgt = chrom
         print("modcallinit",chrom)      
-    seq = nanoDocUtil.getSeq(ref, chrom, start, end, strand)                         
-    if end < 0:
-        end = len(seq)
+    seq = nanoDocUtil.getSeq(ref, chrom, start, end, strand)
+
+
 
     coeffA,coeffB,uplimit,takeparcentile = nanoDocUtil.readParam(paramf)
 
 
     refpr = nanoDocUtil.PqReader(refpq, minreadlen)
     targetpr = nanoDocUtil.PqReader(targetpq, minreadlen)
+
+    if start == 1:
+        start = max(refpr.minStart(chrom),targetpr.minStart(chrom))
+    if end < 0:
+        end = min(refpr.maxEnd(chrom),targetpr.maxEnd(chrom))
+
     model_t = getModel()
 
     fw = open(out, mode='w')
