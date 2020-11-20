@@ -159,10 +159,11 @@ def modCall(wfile, paramf, ref, refpq, targetpq, out, chrom, chromtgt, start, en
     refpr = nanoDocUtil.PqReader(refpq, minreadlen)
     targetpr = nanoDocUtil.PqReader(targetpq, minreadlen)
 
-    if start == 1:
-        start = max(refpr.minStart(chrom),targetpr.minStart(chrom))
+    # if start == 1:
+    #     start = max(refpr.minStart(chrom),targetpr.minStart(chrom))
     if end < 0:
-        end = min(refpr.maxEnd(chrom),targetpr.maxEnd(chrom))
+        # end = min(refpr.maxEnd(chrom),targetpr.maxEnd(chrom))
+        end = len(seq)
 
     model_t = getModel()
 

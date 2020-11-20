@@ -116,10 +116,10 @@ class PqReader:
 #             print(pos,s)
 
     def minStart(self,chr):
-        return df['start'].min()
+        return self.df['start'].min()
 
     def maxEnd(self,chr):
-        return df['end'].max()
+        return self.df['end'].max()
             
     def getData(self,chr,strand,pos,maxtake):
         
