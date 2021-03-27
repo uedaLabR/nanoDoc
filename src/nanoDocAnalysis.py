@@ -44,7 +44,7 @@ def callMinusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, t
     strand = "-"
     while n > start:
         subs = seq[idx:idx + 5]
-        cnt,cntref = eachProcess(n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
+        cnt,cntref = eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
                     chromtgt, start, end)
 
 
