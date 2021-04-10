@@ -178,7 +178,11 @@ def getFastQ(f, key):
     if key in f:
         group = f[key]
         datalist = list(group.values())
-        fastq = datalist[0]
+        fastq = None
+        for d in datalist:
+            if "Fastq" in str(d):
+                fastq = d
+
         fastq = fastq[()]
         try:
             fastq = fastq.decode('utf-8')
