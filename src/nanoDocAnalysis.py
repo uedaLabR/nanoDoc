@@ -45,7 +45,7 @@ def callMinusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, t
     while n > start:
         subs = seq[idx:idx + 5]
         cnt,cntref = eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
-                    chromtgt, start, end)
+                    chromtgt)
 
 
         n = n - 1
@@ -58,23 +58,27 @@ def callPlusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, ta
     for n in range(start, end):
         subs = seq[(n - start):(n - start) + 5]
         cnt,cntref = eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
-                    chromtgt, start, end)
-
+                    chromtgt)
 
 
 def eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom,
-                chromtgt, start, end):
-    weight_path = wfile + str(subs).upper() + "/model_t_ep_1.h5"
+                chromtgt):
+    weight_path = wfile + str(subs) + "/model_t_ep_1.h5"
     model_t.load_weights(weight_path)
-
+    cnt = 0
+    cntref = 0
     # target signal
-    rawdatas, cnt = targetpr.getData(chromtgt, strand, n, uplimit)
+    tgd = targetpr.getData(chromtgt, strand, n, uplimit)
+    if tgd is not None:    
+        rawdatas, cnt = tgd
 
     # reference signal
-    refdatas, cntref = refpr.getData(chrom, strand, n, cnt * 2)
-    print(cnt,cntref,chrom,chromtgt)
+    refd = refpr.getData(chrom, strand, n, cnt * 2)
+    if refd is not None:
+        refdatas, cntref = refd
+    
 
-    if (cnt < 10 or cntref < 10):
+    if (cnt < 10 or cntref < 10 or (tgd is None) or (refd is None)):
         infos = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}".format(n, str(subs), cnt, cnt, 0, 0, 0,
                                                                                       0, 0, "0", "0", "0")
         print(infos)
@@ -82,6 +86,7 @@ def eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, 
         fw.flush()
         return (cnt,cntref)
 
+    print(cnt,cntref,chrom,chromtgt)
     rawdatas, cnt = nanoDocUtil.reducesize(rawdatas, cntref // 2)  # raw data have at least half size as reference data
 
     refdata1, refdata2 = train_test_split(refdatas, test_size=(cntref // 2))
@@ -126,10 +131,23 @@ def eachProcess(wfile,n, subs, strand, coeffA, coeffB, uplimit, takeparcentile, 
     scoreDisplay2 = '{:.7f}'.format(overthrs2)
 
     sd = getSD(cnt, coeffA, coeffB)
+    if overthrs1 < 0:
+        overthrs1 = 0
+    if overthrs2 < 0:
+        overthrs2 = 0
+
     score = (overthrs1 + overthrs2) / sd
-    if score > 500:
-        score = 500
-    score = score/500     #normalize
+
+    if score > 1:
+        score = 1
+    if score < 0:
+        score = 0
+
+
+#    if score > 500:
+#        score = 500
+#    score = score/500     #normalize
+    
     scoreDisplay3 = '{:.7f}'.format(score)
 
     infos = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}".format(n, str(subs), cnt, cntref, med, mad,
@@ -149,28 +167,18 @@ def modCall(wfile, paramf, ref, refpq, targetpq, out, chrom, chromtgt, start, en
         chrom = nanoDocUtil.getFirstChrom(ref)
         chromtgt = chrom
         print("modcallinit",chrom)      
-    seq = nanoDocUtil.getSeq(ref, chrom, start, end, strand)
-
-
+    seq = nanoDocUtil.getSeq(ref, chrom, start, end, strand)                         
+    if end < 0:
+        end = len(seq)
 
     coeffA,coeffB,uplimit,takeparcentile = nanoDocUtil.readParam(paramf)
 
 
     refpr = nanoDocUtil.PqReader(refpq, minreadlen)
     targetpr = nanoDocUtil.PqReader(targetpq, minreadlen)
-
-    # if start == 1:
-    #     start = max(refpr.minStart(chrom),targetpr.minStart(chrom))
-    if end < 0:
-        # end = min(refpr.maxEnd(chrom),targetpr.maxEnd(chrom))
-        end = len(seq)
-
     model_t = getModel()
 
     fw = open(out, mode='w')
-
-    header = "pos \t five_mer \t depth_tgt \t depth_ref \t med_current \t mad_current \t med_currentR \t mad_currentR \t current_ratio \t scoreSide1 \t scoreSide2 \t scoreTotal"
-    fw.writelines(header + "\n")
 
     if strand == "-":
         callMinusStrand(wfile,coeffA, coeffB, uplimit, takeparcentile, seq, refpr, targetpr, model_t, fw, chrom, chromtgt,
