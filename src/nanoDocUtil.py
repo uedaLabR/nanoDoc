@@ -32,6 +32,7 @@ class PqReader:
         tb = []
         self.indexfile = indexfile
         self.minreadlen = minreadlen
+        self.pq = None
         indexfile = indexfile+"/index.txt"
         #print(indexfile)
         f = open(indexfile)
@@ -68,12 +69,14 @@ class PqReader:
             cnt = len(self.currentPqs)
             totaldf = self.pq
         
- 
+        totaldf = None
         for s in ss:
            
             s1 = self.indexfile+"/algined"+str(s)+".pq"
             if not os.path.exists(s1):
-                s1 = self.indexfile + "/" + str(s) + ".pq"
+                s1 = self.indexfile+"/"+str(s)+".pq"
+                        
+                                		
             print(s1)
             
             table = pq.read_table(s1, columns=['nucb4After','mapped_chrom','mapped_strand','position','mapped_start','mapped_end','signal','originalsize'])
@@ -106,7 +109,7 @@ class PqReader:
 #         print(df)
         df = df['idx'].drop_duplicates()
         s = set(df)
-        if(s!= self.currentPqs or self.pq.empty):
+        if(s!= self.currentPqs or self.pq is None):
             self.pq =self.loadpq(s,chr,pos,strand)        
             self.currentPqs =s
         
@@ -114,17 +117,14 @@ class PqReader:
         #    self.freeUnsued(chr,pos,strand)
         
 #             print(pos,s)
-
-    def minStart(self,chr):
-        return self.df['start'].min()
-
-    def maxEnd(self,chr):
-        return self.df['end'].max()
             
     def getData(self,chr,strand,pos,maxtake):
         
         unitwidth = DATA_LENGTH_UNIT
         self.checkUpdate(chr,pos,strand)
+        if self.pq is None:
+            return None
+
         pqlen = len(self.pq)    
         _pq = self.pq
         #print("pqlen=",len(_pq))    
@@ -188,6 +188,7 @@ def getSeq(ref,chrtgt,start,end,strand):
     if strand =="-":
         seq2 = Seq(str(seq))
         seq = seq2.reverse_complement()
+    seq = seq.upper()
     return seq
 
 def getFirstChrom(ref):
